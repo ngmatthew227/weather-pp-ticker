@@ -25,7 +25,7 @@ function App() {
         {/* Card Header */}
         <div className="text-base mt-1 font-bold flex justify-between border-b border-[#ffc001] ">
           <div className="text-white text-4xl">{ctime}</div>
-          <div className="text-white" >{`Last update time: ${updateDateTime}`}</div>
+          <div className="text-white" >{`Last update time: ${updateDateTime.toTimeString().split(" ")[0]}`}</div>
         </div>
         {/* Card Content */}
         <div className="flex flex-row p-2">
