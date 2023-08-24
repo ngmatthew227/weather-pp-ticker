@@ -1,17 +1,6 @@
 import { useEffect, useState } from "react";
-
 import PriceTicker from "./PriceTicker";
 
-interface CoinApiResponse {
-  symbol: string;
-  open: string;
-  high: string;
-  low: string;
-  close: string;
-  changes: string[];
-  bid: string;
-  ask: string;
-}
 
 interface BtcUsdtDataType {
   price: number;
