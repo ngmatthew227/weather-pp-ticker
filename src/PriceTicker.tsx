@@ -1,4 +1,4 @@
-import { Line, LineChart, Tooltip, XAxis, YAxis } from "recharts";
+import { Line, LineChart, YAxis } from "recharts";
 
 interface PriceTickerProps {
   product: string;
