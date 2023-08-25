@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import PriceTicker from "./PriceTicker";
-
+import useUpdateTimeStore from "./useUpdateTimeStore";
 
 interface BtcUsdtDataType {
   price: number;
@@ -13,6 +13,7 @@ interface BtcUsdtDataType {
 
 const PriceContent = () => {
   const [btc_usdt, setBTC_USDT] = useState<BtcUsdtDataType | null>(null);
+  const setUpdateDateTime = useUpdateTimeStore((state) => state.setUpdateDateTime);
 
   const BTC_USDT_API_URL = "https://api.gemini.com/v2/ticker/btcusdt";
 
@@ -32,13 +33,13 @@ const PriceContent = () => {
           value: Number(item),
         };
       });
-      console.log(last24HoursPrice);
 
       setBTC_USDT({
         price: data.bid,
         change: Number(change),
         data: last24HoursPrice,
       });
+      setUpdateDateTime(new Date());
     };
     fetchBTC_USDT();
     // run the function every 2 mins:
