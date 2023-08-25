@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import PriceTicker from "./PriceTicker";
 import useUpdateTimeStore from "./useUpdateTimeStore";
 
-interface BtcUsdtDataType {
+interface CommonDataType {
   price: number;
   change: number;
   data: {
@@ -12,7 +12,8 @@ interface BtcUsdtDataType {
 }
 
 const PriceContent = () => {
-  const [btc_usdt, setBTC_USDT] = useState<BtcUsdtDataType | null>(null);
+  const [btc_usdt, setBTC_USDT] = useState<CommonDataType | null>(null);
+  const [hsi, setHSI] = useState<CommonDataType | null>(null);
   const setUpdateDateTime = useUpdateTimeStore((state) => state.setUpdateDateTime);
 
   const BTC_USDT_API_URL = "https://api.gemini.com/v2/ticker/btcusdt";
@@ -54,7 +55,11 @@ const PriceContent = () => {
       if (!res.ok) {
         throw new Error("Failed to fetch data");
       }
-      console.log(data);
+      setHSI({
+        price: data.price,
+        change: data.change,
+        data: data.data,
+      });
     };
     fetchHSI();
     fetchBTC_USDT();
@@ -69,7 +74,7 @@ const PriceContent = () => {
   return (
     <>
       <PriceTicker product="BTC/USDT" price={btc_usdt?.price} change={btc_usdt?.change} data={btc_usdt?.data} />
-      <PriceTicker product="HSI" price={btc_usdt?.price} change={btc_usdt?.change} data={btc_usdt?.data} />
+      <PriceTicker product="HSI" price={hsi?.price} change={hsi?.change} data={hsi?.data} />
     </>
   );
 };
