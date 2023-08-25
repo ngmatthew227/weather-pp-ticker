@@ -14,7 +14,7 @@ interface CommonDataType {
 const PriceContent = () => {
   const [btc_usdt, setBTC_USDT] = useState<CommonDataType | null>(null);
   const [hsi, setHSI] = useState<CommonDataType | null>(null);
-  const setUpdateDateTime = useUpdateTimeStore((state) => state.setUpdateDateTime);
+  const setUpdateNormally = useUpdateTimeStore((state) => state.setUpdateNormally);
 
   const BTC_USDT_API_URL = "https://api.gemini.com/v2/ticker/btcusdt";
 
@@ -66,9 +66,13 @@ const PriceContent = () => {
     fetchBTC_USDT();
     // run the function every 2 mins:
     const interval = setInterval(() => {
-      fetchBTC_USDT();
-      fetchHSI();
-      setUpdateDateTime(new Date());
+      try {
+        fetchBTC_USDT();
+        fetchHSI();
+        setUpdateNormally(true);
+      } catch (error) {
+        setUpdateNormally(false);
+      }
     }, 120000);
     return () => clearInterval(interval);
   }, []);
