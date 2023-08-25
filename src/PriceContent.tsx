@@ -67,6 +67,7 @@ const PriceContent = () => {
     // run the function every 2 mins:
     const interval = setInterval(() => {
       fetchBTC_USDT();
+      fetchHSI();
       setUpdateDateTime(new Date());
     }, 120000);
     return () => clearInterval(interval);
