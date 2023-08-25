@@ -17,6 +17,8 @@ const PriceContent = () => {
 
   const BTC_USDT_API_URL = "https://api.gemini.com/v2/ticker/btcusdt";
 
+  const HSI_API_URL = "https://futu.matt-site.xyz/hsi-data";
+
   useEffect(() => {
     const fetchBTC_USDT = async () => {
       const res = await fetch(BTC_USDT_API_URL);
@@ -39,12 +41,27 @@ const PriceContent = () => {
         change: Number(change),
         data: last24HoursPrice,
       });
-      setUpdateDateTime(new Date());
     };
+    const fetchHSI = async () => {
+      const res = await fetch(HSI_API_URL, {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Key: "wehdqjfowdueqfighwehbfhweuoigyuifoweui2356468732fghu2i364786",
+        },
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error("Failed to fetch data");
+      }
+      console.log(data);
+    };
+    fetchHSI();
     fetchBTC_USDT();
     // run the function every 2 mins:
     const interval = setInterval(() => {
       fetchBTC_USDT();
+      setUpdateDateTime(new Date());
     }, 120000);
     return () => clearInterval(interval);
   }, []);
