@@ -48,6 +48,7 @@ const PriceContent = () => {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
+          "Access-Control-Allow-Origin": "*",
           Key: "wehdqjfowdueqfighwehbfhweuoigyuifoweui2356468732fghu2i364786",
         },
       });
