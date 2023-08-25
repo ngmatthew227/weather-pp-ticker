@@ -20,9 +20,9 @@ const PriceTicker = (props: PriceTickerProps) => {
         <div className="text-xl font-bold text-white">{props.price}</div>
         {props.change && props.change > 0 ? <div className="text-lg font-bold ml-1 text-green-500">{props.change}</div> : <div className="text-lg font-bold ml-1 text-red-500">{props.change}</div>}
       </div>
-      <LineChart width={250} height={50} data={props.data}>
+      <LineChart width={250} height={50} data={props.data} className="bg-black/20">
         <YAxis domain={["dataMin", "dataMax"]} scale={"linear"} dataKey={"value"} tick={false} axisLine={false} width={2} />
-        <Line type="linear" dataKey="value" stroke="#8884d8" dot={false} />
+        <Line type="linear" dataKey="value" stroke="orange" dot={false} />
       </LineChart>
     </>
   );

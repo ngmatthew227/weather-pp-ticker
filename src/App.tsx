@@ -19,7 +19,7 @@ function App() {
 
   return (
     <>
-      <div className="bg-[#525456] w-[450px] h-[300px] p-2">
+      <div className="bg-[#6c6c6c]/50 bg-opti w-[450px] h-[300px] p-2">
         {/* Card Header */}
         <div className="text-base mt-1 font-bold flex justify-between border-b border-[#ffc001] ">
           <div className="text-white text-4xl">{ctime}</div>
