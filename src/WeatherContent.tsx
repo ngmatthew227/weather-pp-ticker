@@ -114,7 +114,7 @@ const WeatherContent = () => {
   return (
     <>
       <div className="flex text-white">
-        <img className="h-[60px] w-[60px] mr-1" src={`/weather-icon/pic${weatherData?.icon[0]}.png`} alt="weather icon" />
+        <img className="h-[60px] w-[60px] mr-1" src={`/weather-icon/pic${weatherData?.icon[0] ? "pic50" : weatherData?.icon[0]}.png`} alt="weather icon" />
         <div className="text-4xl font-bold">{weatherData?.temperature.data[1].value}°C</div>
       </div>
       <div className="flex text-white">
@@ -124,8 +124,8 @@ const WeatherContent = () => {
       <div className="flex mt-1">
         {warning &&
           warning.length > 0 &&
-          warning.map((ele) => {
-            return <img className="h-[40px] w-[40px] mr-1" src={`/warning-icon/${ele}.gif`} alt="warning icon" />;
+          warning.map((ele, idx) => {
+            return <img className="h-[40px] w-[40px] mr-1" src={`/warning-icon/${ele}.gif`} alt="warning icon" key={idx} />;
           })}
       </div>
     </>

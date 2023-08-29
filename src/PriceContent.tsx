@@ -21,7 +21,6 @@ interface CommonDataType {
 }
 
 const PriceContent = () => {
-  const [warned, setWarned] = useState(false);
   const [btc_usdt, setBTC_USDT] = useState<CommonDataType | null>(null);
   const [hsi, setHSI] = useState<CommonDataType | null>(null);
   const showMsg = useAlertStore((state) => state.showMsg);
@@ -84,13 +83,15 @@ const PriceContent = () => {
       if (!res.ok) {
         throw new Error("Failed to fetch data");
       }
-
-      if (singalData.signal.action === "buy" && !warned) {
-        showMsg("BUY BUY BUY BUY");
-        setWarned(true);
-      } else if (singalData.signal.action === "sell" && !warned) {
-        showMsg("SELL SELL SELL SELL");
-        setWarned(true);
+      const currTime = new Date();
+      const currHour = currTime.getHours();
+      const currMin = currTime.getMinutes();
+      if (currHour === 10 && currMin >= 15) {
+        if (singalData.signal.action === "buy") {
+          showMsg("HSI: Buy Buy!!!!!!!");
+        } else if (singalData.signal.action === "sell") {
+          showMsg("HSI: Sell Sell!!!!!!");
+        }
       }
 
       setHSI({
