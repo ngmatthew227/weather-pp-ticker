@@ -1,24 +1,36 @@
 import { useEffect, useState } from "react";
 import PriceTicker from "./PriceTicker";
+import useAlertStore from "./useAlertStore";
 import useUpdateTimeStore from "./useUpdateTimeStore";
 
 interface CommonDataType {
-  price: number;
-  change: number;
-  data: {
+  price?: number;
+  change?: number;
+  data?: {
     time: string;
     value: number;
   }[];
+  signal?: {
+    action: "buy" | "sell";
+    high: number;
+    low: number;
+    target: number;
+    cutoff: number;
+    open_price: number;
+  };
 }
 
 const PriceContent = () => {
+  const [warned, setWarned] = useState(false);
   const [btc_usdt, setBTC_USDT] = useState<CommonDataType | null>(null);
   const [hsi, setHSI] = useState<CommonDataType | null>(null);
+  const showMsg = useAlertStore((state) => state.showMsg);
+
   const setUpdateNormally = useUpdateTimeStore((state) => state.setUpdateNormally);
 
   const BTC_USDT_API_URL = "https://api.gemini.com/v2/ticker/btcusdt";
-
   const HSI_API_URL = "https://futu.matt-site.xyz/hsi-data";
+  const HSI_SINGAL_API_URL = "https://futu.matt-site.xyz/hsi-signal";
 
   useEffect(() => {
     const fetchBTC_USDT = async () => {
@@ -41,6 +53,7 @@ const PriceContent = () => {
         price: data.bid,
         change: Number(change),
         data: last24HoursPrice,
+        signal: data.signal,
       });
     };
     const fetchHSI = async () => {
@@ -56,14 +69,41 @@ const PriceContent = () => {
       if (!res.ok) {
         throw new Error("Failed to fetch data");
       }
+
+      const singalRes = await fetch(HSI_SINGAL_API_URL, {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "Access-Control-Allow-Origin": "*",
+          Key: "wehdqjfowdueqfighwehbfhweuoigyuifoweui2356468732fghu2i364786",
+        },
+      });
+
+      const singalData = await singalRes.json();
+
+      if (!res.ok) {
+        throw new Error("Failed to fetch data");
+      }
+
+      if (singalData.signal.action === "buy" && !warned) {
+        showMsg("BUY BUY BUY BUY");
+        setWarned(true);
+      } else if (singalData.signal.action === "sell" && !warned) {
+        showMsg("SELL SELL SELL SELL");
+        setWarned(true);
+      }
+
       setHSI({
         price: data.price,
         change: data.change,
         data: data.data,
+        signal: singalData.signal,
       });
     };
+
     fetchHSI();
     fetchBTC_USDT();
+
     // run the function every 2 mins:
     const interval = setInterval(() => {
       try {
@@ -80,7 +120,7 @@ const PriceContent = () => {
   return (
     <>
       <PriceTicker product="BTC/USDT" price={btc_usdt?.price} change={btc_usdt?.change} data={btc_usdt?.data} />
-      <PriceTicker product="HSI" price={hsi?.price} change={hsi?.change} data={hsi?.data} />
+      <PriceTicker product="HSI" price={hsi?.price} change={hsi?.change} data={hsi?.data} signal={hsi?.signal} />
     </>
   );
 };
