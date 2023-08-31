@@ -114,7 +114,7 @@ const WeatherContent = () => {
   return (
     <>
       <div className="flex text-white">
-        <img className="h-[60px] w-[60px] mr-1" src={`/weather-icon/pic${weatherData?.icon[0] ? "50" : weatherData?.icon[0]}.png`} alt="weather icon" />
+        <img className="h-[60px] w-[60px] mr-1" src={`/weather-icon/pic${weatherData?.icon[0] ? weatherData?.icon[0] : "50"}.png`} alt="weather icon" />
         <div className="text-4xl font-bold">{weatherData?.temperature.data[1].value}°C</div>
       </div>
       <div className="flex text-white">
