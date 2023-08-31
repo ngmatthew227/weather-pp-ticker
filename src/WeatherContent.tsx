@@ -61,7 +61,7 @@ const WeatherContent = () => {
     rainb: "Black Rainstorm Warning Signal",
     rainr: "Red Rainstorm Warning Signal",
     sms: " 	Strong Monsoon Signal",
-    tc1: "Standby Signal No. 1",
+    tc1: " Tropical Cyclone Signal No. 1",
     tc3: "Strong Wind Signal No. 3",
     tc8b: "No. 8 Southeast Gale or Storm Signal",
     tc8c: "No. 8 Northwest Gale or Storm Signal",
@@ -107,14 +107,14 @@ const WeatherContent = () => {
     fetchData();
     const interval = setInterval(() => {
       fetchData();
-    }, 1800000);
+    }, 300000);
     return () => clearInterval(interval);
   }, []);
 
   return (
     <>
       <div className="flex text-white">
-        <img className="h-[60px] w-[60px] mr-1" src={`/weather-icon/pic${weatherData?.icon[0] ? "pic50" : weatherData?.icon[0]}.png`} alt="weather icon" />
+        <img className="h-[60px] w-[60px] mr-1" src={`/weather-icon/pic${weatherData?.icon[0] ? "50" : weatherData?.icon[0]}.png`} alt="weather icon" />
         <div className="text-4xl font-bold">{weatherData?.temperature.data[1].value}°C</div>
       </div>
       <div className="flex text-white">
