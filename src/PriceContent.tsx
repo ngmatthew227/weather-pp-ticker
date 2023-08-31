@@ -69,28 +69,35 @@ const PriceContent = () => {
         throw new Error("Failed to fetch data");
       }
 
-      const singalRes = await fetch(HSI_SINGAL_API_URL, {
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          "Access-Control-Allow-Origin": "*",
-          Key: "wehdqjfowdueqfighwehbfhweuoigyuifoweui2356468732fghu2i364786",
-        },
-      });
-
-      const singalData = await singalRes.json();
-
-      if (!res.ok) {
-        throw new Error("Failed to fetch data");
-      }
       const currTime = new Date();
       const currHour = currTime.getHours();
       const currMin = currTime.getMinutes();
-      if (currHour === 10 && currMin >= 15) {
-        if (singalData.signal.action === "buy") {
-          showMsg("HSI: Buy Buy!!!!!!!");
-        } else if (singalData.signal.action === "sell") {
-          showMsg("HSI: Sell Sell!!!!!!");
+      let fetchSignal = false;
+      let singalData;
+
+      if (currHour >= 10 && currMin >= 15) {
+        fetchSignal = true;
+        const singalRes = await fetch(HSI_SINGAL_API_URL, {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "Access-Control-Allow-Origin": "*",
+            Key: "wehdqjfowdueqfighwehbfhweuoigyuifoweui2356468732fghu2i364786",
+          },
+        });
+
+        singalData = await singalRes.json();
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch data");
+        }
+
+        if (currHour === 10 && currMin >= 15) {
+          if (singalData.signal.action === "buy") {
+            showMsg("HSI: Buy Buy!!!!!!!");
+          } else if (singalData.signal.action === "sell") {
+            showMsg("HSI: Sell Sell!!!!!!");
+          }
         }
       }
 
@@ -98,7 +105,7 @@ const PriceContent = () => {
         price: data.price,
         change: data.change,
         data: data.data,
-        signal: singalData.signal,
+        signal: fetchSignal ? singalData.signal : null,
       });
     };
 
