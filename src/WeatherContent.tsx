@@ -60,9 +60,9 @@ const WeatherContent = () => {
     raina: "Amber Rainstorm Warning Signal",
     rainb: "Black Rainstorm Warning Signal",
     rainr: "Red Rainstorm Warning Signal",
-    sms: " 	Strong Monsoon Signal",
-    tc1: " Tropical Cyclone Signal No. 1",
-    tc3: "Strong Wind Signal No. 3",
+    sms: "Strong Monsoon Signal",
+    tc1: "Tropical Cyclone Signal No. 1",
+    tc3: "Tropical Cyclone Signal No. 3",
     tc8b: "No. 8 Southeast Gale or Storm Signal",
     tc8c: "No. 8 Northwest Gale or Storm Signal",
     tc8ne: "No. 8 Northeast Gale or Storm Signal",
@@ -98,6 +98,8 @@ const WeatherContent = () => {
           });
           if (warningArray.length > 0) {
             setWarning(warningArray);
+          } else {
+            setWarning([]);
           }
         }
       } catch (error) {
