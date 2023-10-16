@@ -29,7 +29,7 @@ const PriceContent = () => {
 
   const BTC_USDT_API_URL = "https://api.gemini.com/v2/ticker/btcusdt";
   const HSI_API_URL = "https://futu.matt-site.xyz/hsi-data";
-  const HSI_SINGAL_API_URL = "https://futu.matt-site.xyz/hsi-signal";
+  // const HSI_SINGAL_API_URL = "https://futu.matt-site.xyz/hsi-signal";
 
   useEffect(() => {
     const fetchBTC_USDT = async () => {
@@ -56,7 +56,11 @@ const PriceContent = () => {
       });
     };
     const fetchHSI = async () => {
-      const res = await fetch(HSI_API_URL, {
+      const timeoutPromise = new Promise<Response>((resolve, reject) => {
+        setTimeout(() => reject(new Error("Request timed out")), 3000);
+      });
+
+      const fetchPromise = await fetch(HSI_API_URL, {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
@@ -64,55 +68,28 @@ const PriceContent = () => {
           Key: "wehdqjfowdueqfighwehbfhweuoigyuifoweui2356468732fghu2i364786",
         },
       });
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error("Failed to fetch data");
-      }
 
-      const currTime = new Date();
-      const currHour = currTime.getHours();
-      const currMin = currTime.getMinutes();
-      let fetchSignal = false;
-      let singalData;
-
-      if (currHour >= 10 && currMin >= 15) {
-        fetchSignal = true;
-        const singalRes = await fetch(HSI_SINGAL_API_URL, {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            "Access-Control-Allow-Origin": "*",
-            Key: "wehdqjfowdueqfighwehbfhweuoigyuifoweui2356468732fghu2i364786",
-          },
-        });
-
-        singalData = await singalRes.json();
-
+      try {
+        const res = await Promise.race([fetchPromise, timeoutPromise]) as Response;
+        const data = await res.json();
         if (!res.ok) {
           throw new Error("Failed to fetch data");
         }
 
-        if (currHour === 10 && currMin >= 15) {
-          if (singalData.signal.action === "buy") {
-            showMsg("HSI: Buy Buy!!!!!!!");
-          } else if (singalData.signal.action === "sell") {
-            showMsg("HSI: Sell Sell!!!!!!");
-          }
-        }
+        setHSI({
+          price: data.price,
+          change: data.change,
+          data: data.data,
+        });
+      } catch (error) {
+        console.error(error);
       }
-
-      setHSI({
-        price: data.price,
-        change: data.change,
-        data: data.data,
-        signal: fetchSignal ? singalData.signal : null,
-      });
     };
 
     fetchHSI();
     fetchBTC_USDT();
 
-    // run the function every 2 mins:
+    // run the function every 10 secs
     const interval = setInterval(() => {
       try {
         fetchBTC_USDT();
@@ -121,7 +98,7 @@ const PriceContent = () => {
       } catch (error) {
         setUpdateNormally(false);
       }
-    }, 120000);
+    }, 10000);
     return () => clearInterval(interval);
   }, []);
 

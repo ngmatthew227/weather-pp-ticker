@@ -6,7 +6,7 @@ import useUpdateTimeStore from "./useUpdateTimeStore";
 const WeatherContent = lazy(() => import("./WeatherContent"));
 
 function App() {
-  const udpateNormally = useUpdateTimeStore((state) => state.udpateNormally);
+  const updateNormally = useUpdateTimeStore((state) => state.updateNormally);
 
   let time = new Date().toLocaleString();
 
@@ -24,8 +24,8 @@ function App() {
         <div className="text-base mt-1 font-bold flex justify-between border-b border-[#ffc001] ">
           <div className="text-white text-4xl">{ctime}</div>
           <span className="flex justify-center items-center">
-            <span className={`animate-ping absolute h-4 w-4 rounded-full ${udpateNormally ? "bg-green-400" : "bg-red-400"}  opacity-40`}></span>
-            <span className={`relative rounded-full h-3 w-3 ${udpateNormally ? "bg-green-500" : "bg-red-500"}`}></span>
+            <span className={`animate-ping absolute h-4 w-4 rounded-full ${updateNormally ? "bg-green-400" : "bg-red-400"}  opacity-40`}></span>
+            <span className={`relative rounded-full h-3 w-3 ${updateNormally ? "bg-green-500" : "bg-red-500"}`}></span>
           </span>
         </div>
         {/* Card Content */}
