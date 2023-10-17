@@ -56,11 +56,7 @@ const PriceContent = () => {
       });
     };
     const fetchHSI = async () => {
-      const timeoutPromise = new Promise<Response>((_, reject) => {
-        setTimeout(() => reject(new Error("Request timed out")), 3000);
-      });
-
-      const fetchPromise = await fetch(HSI_API_URL, {
+      const res = await fetch(HSI_API_URL, {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
@@ -68,23 +64,17 @@ const PriceContent = () => {
           Key: "wehdqjfowdueqfighwehbfhweuoigyuifoweui2356468732fghu2i364786",
         },
       });
-
-      try {
-        const res = await Promise.race([fetchPromise, timeoutPromise]) as Response;
-        const data = await res.json();
-        if (!res.ok) {
-          throw new Error("Failed to fetch data");
-        }
-
-        setHSI({
-          price: data.price,
-          change: data.change,
-          data: data.data,
-        });
-      } catch (error) {
+      if (!res.ok) {
         showMsg("Failed to fetch data");
-        console.error(error);
+        throw new Error("Failed to fetch data");
       }
+      const data = await res.json();
+
+      setHSI({
+        price: data.price,
+        change: data.change,
+        data: data.data,
+      });
     };
 
     fetchHSI();
