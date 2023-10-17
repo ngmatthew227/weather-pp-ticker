@@ -56,7 +56,7 @@ const PriceContent = () => {
       });
     };
     const fetchHSI = async () => {
-      const timeoutPromise = new Promise<Response>((resolve, reject) => {
+      const timeoutPromise = new Promise<Response>((_, reject) => {
         setTimeout(() => reject(new Error("Request timed out")), 3000);
       });
 
@@ -82,6 +82,7 @@ const PriceContent = () => {
           data: data.data,
         });
       } catch (error) {
+        showMsg("Failed to fetch data");
         console.error(error);
       }
     };
