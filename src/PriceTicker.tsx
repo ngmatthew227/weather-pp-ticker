@@ -1,6 +1,4 @@
 import { Line, LineChart, YAxis } from "recharts";
-import SellLogo from "../public/graph-line-down-svgrepo-com.svg";
-import BuyLogo from "../public/graph-line-svgrepo-com.svg";
 
 interface PriceTickerProps {
   product: string;
@@ -25,20 +23,10 @@ interface PriceTickerProps {
 const PriceTicker = (props: PriceTickerProps) => {
   return (
     <>
-      <div className="flex items-center text-2xl font-bold text-white text-left">
+      <div className="flex items-center text-xl font-bold text-white text-left">
         {props.product}
-        {props.signal && props.signal.action === "buy" && <img src={BuyLogo} className="h-[30px]" />}
-        {props.signal && props.signal.action === "sell" && <img src={SellLogo} className="h-[30px]" />}
-        {props.signal && props.signal.action !== "" && (
-          <>
-            <div className="text-sm mr-2 text-green-300">{props.signal.target}</div>
-            <div className="text-sm text-red-300">{props.signal.cutoff}</div>
-          </>
-        )}
-      </div>
-      <div className="flex">
-        <div className="text-xl font-bold text-white">{props.price}</div>
-        {props.change && props.change > 0 ? <div className="text-lg font-bold ml-1 text-green-500">{props.change}</div> : <div className="text-lg font-bold ml-1 text-red-500">{props.change}</div>}
+        <div className="ml-2 text-lg font-bold text-white">{props.price}</div>
+        {props.change && props.change > 0 ? <div className="text-sm font-bold ml-1 text-green-500">{props.change}</div> : <div className="text-sm font-bold ml-1 text-red-500">{props.change}</div>}
       </div>
       <LineChart width={250} height={50} data={props.data} className="bg-black/20">
         <YAxis domain={["dataMin", "dataMax"]} scale={"linear"} dataKey={"value"} tick={false} axisLine={false} width={2} />
