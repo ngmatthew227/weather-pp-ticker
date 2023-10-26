@@ -27,7 +27,14 @@ const ProductManageModal = ({ onClose }: ProductManageModalProps) => {
               </button>
             </div>
             <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-              <input className="w-full border border-gray-600 rounded-sm p-1" placeholder="Code" value={code} readOnly />
+              <input
+                className="w-full border border-gray-600 rounded-sm p-1"
+                placeholder="Code"
+                value={code}
+                onChange={(evt) => {
+                  setCode(evt.target.value);
+                }}
+              />
               <div className="flex mt-2">
                 <div className="grid grid-cols-3 gap-1">
                   <button className="w-[50px] border border-gray-600 rounded-sm flex justify-center" onClick={() => setCode(code + "1")}>
