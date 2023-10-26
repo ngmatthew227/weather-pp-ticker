@@ -93,7 +93,7 @@ const PriceContent = () => {
       } catch (error) {
         setUpdateNormally(false);
       }
-    }, 10000);
+    }, 3000);
     addIntervalId(intervalTmpId);
   };
 
