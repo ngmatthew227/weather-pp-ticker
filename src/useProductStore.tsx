@@ -9,7 +9,7 @@ interface ProductStore {
   addIntervalId: (intervalId: number) => void;
 }
 
-const useProductStore = create<ProductStore>()(
+const useProductStore = create<ProductStore, [["zustand/persist", unknown]]>(
   persist(
     (set) => ({
       products: ["HK_FUTURE.HSImain", "HK.800000"],
