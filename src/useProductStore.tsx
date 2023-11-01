@@ -10,7 +10,7 @@ interface ProductStore {
 }
 
 const useProductStore = create<ProductStore>()(
-  persist<ProductStore>(
+  persist(
     (set) => ({
       products: ["HK_FUTURE.HSImain", "HK.800000"],
       intervalIds: [],
