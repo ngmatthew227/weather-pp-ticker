@@ -21,6 +21,7 @@ interface CommonDataType {
   };
 }
 
+
 interface PriceContentType {
   code: string;
   last_price: number;
