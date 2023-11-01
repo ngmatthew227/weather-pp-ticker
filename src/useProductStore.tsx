@@ -1,13 +1,13 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-type ProductStore = {
+interface ProductStore {
   products: string[];
   intervalIds: number[];
   addProduct: (product: string) => void;
   removeProduct: (product: string) => void;
   addIntervalId: (intervalId: number) => void;
-};
+}
 
 const useProductStore = create<ProductStore>()(
   persist(
