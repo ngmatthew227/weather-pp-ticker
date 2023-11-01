@@ -7,7 +7,7 @@ type UpdateTimeStore = {
   setUpdateNormally: (value: boolean) => void;
 };
 
-const useUpdateTimeStore = create<UpdateTimeStore>((set) => ({
+const useUpdateTimeStore = create<UpdateTimeStore>()((set) => ({
   updateNormally: true,
   updateDateTime: new Date(),
   setUpdateDateTime: (date: Date) => set({ updateDateTime: date }),

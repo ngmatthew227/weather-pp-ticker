@@ -7,7 +7,7 @@ type AlertStore = {
   showMsg: (message: string) => void;
 };
 
-const useAlertStore = create<AlertStore>((set) => ({
+const useAlertStore = create<AlertStore>()((set) => ({
   show: false,
   message: "",
   setShow: (value: boolean) => set({ show: value }),
