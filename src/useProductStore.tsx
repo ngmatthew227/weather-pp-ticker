@@ -9,7 +9,7 @@ interface ProductStore {
   addIntervalId: (intervalId: number) => void;
 }
 
-const useProductStore = create<ProductStore, [["zustand/persist", unknown]]>(
+const useProductStore = create<ProductStore>()(
   persist(
     (set) => ({
       products: ["HK_FUTURE.HSImain", "HK.800000"],
@@ -32,6 +32,7 @@ const useProductStore = create<ProductStore, [["zustand/persist", unknown]]>(
     }),
     {
       name: "product-storage",
+      partialize: (state) => ({ products: state.products }),
     }
   )
 );
