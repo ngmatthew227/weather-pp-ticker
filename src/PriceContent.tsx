@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import PriceTicker from "./PriceTicker";
 import SmallPriceTicker from "./SmallPriceTicker";
@@ -21,7 +22,6 @@ interface CommonDataType {
   };
 }
 
-
 interface PriceContentType {
   code: string;
   last_price: number;
@@ -40,6 +40,7 @@ const PriceContent = () => {
   const [priceData, setPriceData] = useState<[PriceContentType] | null>(null);
 
   const setUpdateNormally = useUpdateTimeStore((state) => state.setUpdateNormally);
+  const setUpdateDateTime = useUpdateTimeStore((state) => state.setUpdateDateTime);
   const { products, intervalIds, addIntervalId } = useProductStore((state) => state);
 
   const BTC_USDT_API_URL = "https://api.gemini.com/v2/ticker/btcusdt";
@@ -70,19 +71,20 @@ const PriceContent = () => {
   };
   const fetchPriceData = async () => {
     const params = new URLSearchParams({ codes: products.join(",") });
-    const res = await fetch(`${HSI_API_URL}?${params}`, {
+    const res = await axios.get(`${HSI_API_URL}?${params}`, {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
         "Access-Control-Allow-Origin": "*",
         Key: "wehdqjfowdueqfighwehbfhweuoigyuifoweui2356468732fghu2i364786",
       },
+      timeout: 3000,
     });
-    if (!res.ok) {
+
+    if (res.status !== 200) {
       throw new Error("Failed to fetch data");
     }
-    const data = await res.json();
-    setPriceData(data);
+    setPriceData(res.data);
   };
 
   const runIntervalJob = () => {
@@ -91,6 +93,7 @@ const PriceContent = () => {
         fetchPriceData();
         fetchBTC_USDT();
         setUpdateNormally(true);
+        setUpdateDateTime(new Date());
       } catch (error) {
         setUpdateNormally(false);
       }
