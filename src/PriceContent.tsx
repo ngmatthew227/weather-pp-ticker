@@ -82,6 +82,7 @@ const PriceContent = () => {
         timeout: 3000,
       })
       .catch((err) => {
+        console.log(err);
         setUpdateNormally(false);
         throw new Error("Failed to fetch data");
       });
