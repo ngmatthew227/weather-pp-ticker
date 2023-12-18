@@ -89,11 +89,12 @@ const PriceContent = () => {
     if (res.status !== 200) {
       setUpdateNormally(false);
       throw new Error("Failed to fetch data");
-    } else {
-      setUpdateNormally(true);
     }
-
-    setPriceData(res.data);
+    if (res.status === 200) {
+      setUpdateNormally(true);
+      setUpdateDateTime(new Date());
+      setPriceData(res.data);
+    }
   };
 
   const runIntervalJob = () => {
@@ -101,7 +102,6 @@ const PriceContent = () => {
       try {
         fetchPriceData();
         fetchBTC_USDT();
-        setUpdateDateTime(new Date());
       } catch (error) {
         setUpdateNormally(false);
       }
