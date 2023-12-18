@@ -71,19 +71,28 @@ const PriceContent = () => {
   };
   const fetchPriceData = async () => {
     const params = new URLSearchParams({ codes: products.join(",") });
-    const res = await axios.get(`${HSI_API_URL}?${params}`, {
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        "Access-Control-Allow-Origin": "*",
-        Key: "wehdqjfowdueqfighwehbfhweuoigyuifoweui2356468732fghu2i364786",
-      },
-      timeout: 3000,
-    });
+    const res = await axios
+      .get(`${HSI_API_URL}?${params}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "Access-Control-Allow-Origin": "*",
+          Key: "wehdqjfowdueqfighwehbfhweuoigyuifoweui2356468732fghu2i364786",
+        },
+        timeout: 3000,
+      })
+      .catch((err) => {
+        setUpdateNormally(false);
+        throw new Error("Failed to fetch data");
+      });
 
     if (res.status !== 200) {
+      setUpdateNormally(false);
       throw new Error("Failed to fetch data");
+    } else {
+      setUpdateNormally(true);
     }
+
     setPriceData(res.data);
   };
 
@@ -92,7 +101,6 @@ const PriceContent = () => {
       try {
         fetchPriceData();
         fetchBTC_USDT();
-        setUpdateNormally(true);
         setUpdateDateTime(new Date());
       } catch (error) {
         setUpdateNormally(false);
