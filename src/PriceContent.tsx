@@ -71,8 +71,8 @@ const PriceContent = () => {
   };
   const fetchPriceData = async () => {
     const params = new URLSearchParams({ codes: products.join(",") });
-    const res = await axios
-      .get(`${HSI_API_URL}?${params}`, {
+    try {
+      const res = await axios.get(`${HSI_API_URL}?${params}`, {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
@@ -80,21 +80,19 @@ const PriceContent = () => {
           Key: "wehdqjfowdueqfighwehbfhweuoigyuifoweui2356468732fghu2i364786",
         },
         timeout: 3000,
-      })
-      .catch((err) => {
-        console.log(err);
-        setUpdateNormally(false);
-        throw new Error("Failed to fetch data");
       });
 
-    if (res.status !== 200) {
-      setUpdateNormally(false);
+      if (res.status !== 200) {
+        setUpdateNormally(false);
+        throw new Error("Failed to fetch data");
+      }
+      if (res.status === 200) {
+        setUpdateNormally(true);
+        setUpdateDateTime(new Date());
+        setPriceData(res.data);
+      }
+    } catch (error) {
       throw new Error("Failed to fetch data");
-    }
-    if (res.status === 200) {
-      setUpdateNormally(true);
-      setUpdateDateTime(new Date());
-      setPriceData(res.data);
     }
   };
 
@@ -106,7 +104,7 @@ const PriceContent = () => {
       } catch (error) {
         setUpdateNormally(false);
       }
-    }, 3000);
+    }, 5000);
     addIntervalId(intervalTmpId);
   };
 
