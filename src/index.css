@@ -30,13 +30,7 @@ body {
   min-height: 100vh;
 
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(rgba(206, 206, 206, 0), rgba(194, 194, 194, 0.5)), url(/hk_night.jpg)
-  /* background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb)); */
+  background: #282c34;
 }
 
 @media (prefers-color-scheme: light) {
