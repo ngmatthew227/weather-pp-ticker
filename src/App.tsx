@@ -50,6 +50,7 @@ function App() {
             <span className={`relative rounded-full h-3 w-3 ${updateNormally ? "bg-green-500" : "bg-red-500"}`}></span>
           </span>
         </div>
+        <div className="hidden">{isOnline}</div>
         {/* Card Content */}
         <div className="flex flex-row p-2">
           {/* Left Content */}
