@@ -6,7 +6,7 @@ interface ProductStore {
   intervalIds: number[];
   addProduct: (product: string) => void;
   removeProduct: (product: string) => void;
-  addIntervalId: (intervalId: number) => void;
+  addIntervalId: (intervalId: any) => void;
 }
 
 const useProductStore = create<ProductStore>()(

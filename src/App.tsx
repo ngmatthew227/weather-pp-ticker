@@ -1,12 +1,15 @@
-import { Suspense, lazy, useState } from "react";
+import { Suspense, lazy, useEffect, useState } from "react";
 import "./App.css";
 import PriceContent from "./PriceContent";
 import useUpdateTimeStore from "./useUpdateTimeStore";
+import useAlertStore from "./useAlertStore";
 
 const WeatherContent = lazy(() => import("./WeatherContent"));
 
 function App() {
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
   const updateNormally = useUpdateTimeStore((state) => state.updateNormally);
+  const { showMsg } = useAlertStore();
 
   let time = new Date().toLocaleString();
 
@@ -16,6 +19,23 @@ function App() {
     setTime(time);
   };
   setInterval(UpdateTime);
+
+  useEffect(() => {
+    const handleOnline = () => {
+      showMsg("You are now online");
+    };
+    const handleOffline = () => {
+      showMsg("You are now offline");
+    };
+
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
+
+    return () => {
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
+  }, []);
 
   return (
     <>
