@@ -2,14 +2,11 @@ import { Suspense, lazy, useEffect, useState } from "react";
 import "./App.css";
 import PriceContent from "./PriceContent";
 import useUpdateTimeStore from "./useUpdateTimeStore";
-import useAlertStore from "./useAlertStore";
 
 const WeatherContent = lazy(() => import("./WeatherContent"));
 
 function App() {
-  const [isOnline, setIsOnline] = useState(navigator.onLine);
-  const updateNormally = useUpdateTimeStore((state) => state.updateNormally);
-  const { showMsg } = useAlertStore();
+  const { updateNormally, setUpdateNormally } = useUpdateTimeStore();
 
   let time = new Date().toLocaleString();
 
@@ -21,22 +18,16 @@ function App() {
   setInterval(UpdateTime);
 
   useEffect(() => {
-    const handleOnline = () => {
-      setIsOnline(true);
-      showMsg("You are now online");
-    };
-    const handleOffline = () => {
-      setIsOnline(false);
-      showMsg("You are now offline");
-    };
-
-    window.addEventListener("online", handleOnline);
-    window.addEventListener("offline", handleOffline);
-
-    return () => {
-      window.removeEventListener("online", handleOnline);
-      window.removeEventListener("offline", handleOffline);
-    };
+    const interval = setInterval(() => {
+      fetch("https://api.ipify.org/")
+        .then(() => {
+          setUpdateNormally(true);
+        })
+        .catch(() => {
+          setUpdateNormally(false);
+        });
+    }, 1000);
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -50,7 +41,6 @@ function App() {
             <span className={`relative rounded-full h-3 w-3 ${updateNormally ? "bg-green-500" : "bg-red-500"}`}></span>
           </span>
         </div>
-        <div className="hidden">{isOnline}</div>
         {/* Card Content */}
         <div className="flex flex-row p-2">
           {/* Left Content */}

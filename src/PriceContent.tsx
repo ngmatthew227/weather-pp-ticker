@@ -39,7 +39,6 @@ const PriceContent = () => {
   const [btc_usdt, setBTC_USDT] = useState<CommonDataType | null>(null);
   const [priceData, setPriceData] = useState<[PriceContentType] | null>(null);
 
-  const setUpdateNormally = useUpdateTimeStore((state) => state.setUpdateNormally);
   const setUpdateDateTime = useUpdateTimeStore((state) => state.setUpdateDateTime);
   const { products, intervalIds, addIntervalId } = useProductStore((state) => state);
 
@@ -83,18 +82,15 @@ const PriceContent = () => {
       })
       .then((res) => {
         if (res.status !== 200) {
-          setUpdateNormally(false);
           throw new Error("Failed to fetch data");
         }
         if (res.status === 200) {
-          setUpdateNormally(true);
           setUpdateDateTime(new Date());
           setPriceData(res.data);
         }
       })
       .catch((err) => {
         console.log(err);
-        setUpdateNormally(false);
       });
   };
 
@@ -104,7 +100,7 @@ const PriceContent = () => {
         fetchPriceData();
         fetchBTC_USDT();
       } catch (error) {
-        setUpdateNormally(false);
+        console.error(error);
       }
     }, 5000);
     addIntervalId(intervalTmpId);
