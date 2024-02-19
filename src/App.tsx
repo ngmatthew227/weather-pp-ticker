@@ -22,9 +22,11 @@ function App() {
 
   useEffect(() => {
     const handleOnline = () => {
+      setIsOnline(true);
       showMsg("You are now online");
     };
     const handleOffline = () => {
+      setIsOnline(false);
       showMsg("You are now offline");
     };
 
