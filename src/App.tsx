@@ -2,6 +2,7 @@ import { Suspense, lazy, useEffect, useState } from "react";
 import "./App.css";
 import PriceContent from "./PriceContent";
 import useUpdateTimeStore from "./useUpdateTimeStore";
+import axios from "axios";
 
 const WeatherContent = lazy(() => import("./WeatherContent"));
 
@@ -19,7 +20,8 @@ function App() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      fetch("https://api.ipify.org/")
+      axios
+        .get("https://api.ipify.org/", { timeout: 1000 })
         .then(() => {
           setUpdateNormally(true);
         })
